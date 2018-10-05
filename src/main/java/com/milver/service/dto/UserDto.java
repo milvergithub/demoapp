@@ -1,35 +1,26 @@
-package com.milver.domain;
+package com.milver.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.NotNull;
 
-import javax.persistence.*;
-import java.util.List;
+public class UserDto {
 
-@Entity
-@Table(name = "users")
-public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "EMAIL", unique = true)
+    @NotNull()
+    @Email
     private String email;
 
-    @Column(name = "PASSWORD")
+    @NotNull
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
 
-    @Column(name = "FIRST_NAME")
+    @NotNull
     private String firstName;
 
-    @Column(name = "LAST_NAME")
     private String lastName;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
-    @JsonIgnore
-    private List<Recipe> recipes;
 
     public Long getId() {
         return id;
@@ -69,13 +60,5 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
     }
 }
