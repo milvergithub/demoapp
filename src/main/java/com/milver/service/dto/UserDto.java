@@ -1,7 +1,9 @@
 package com.milver.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class UserDto {
@@ -11,13 +13,16 @@ public class UserDto {
 
     @NotNull()
     @Email
+    @NotBlank
     private String email;
 
     @NotNull
+    @NotBlank
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
 
     @NotNull
+    @NotBlank
     private String firstName;
 
     private String lastName;

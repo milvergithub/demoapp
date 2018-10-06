@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -69,8 +68,8 @@ public class ExceptionHandlers {
         return new ErrorResponse("METHOD_NOT_ALLOWED", "An unexpected internal server error occured");
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(EntityNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFoundException(ResourceNotFoundException ex) {
         ErrorResponse errorDetails = new ErrorResponse( "NOT FOUND EXCEPTION", "Not Found " + ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
