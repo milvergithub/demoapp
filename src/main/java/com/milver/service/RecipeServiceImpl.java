@@ -6,13 +6,14 @@ import com.milver.repository.RecipeRepository;
 import com.milver.repository.UserRepository;
 import com.milver.service.dto.RecipeDto;
 import com.milver.service.mapper.RecipeMapper;
-import com.milver.web.error.EntityNotFoundException;
+import com.milver.web.error.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import static com.milver.domain.QRecipe.recipe;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -33,11 +34,17 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeRepository.findAll(pageable).map(recipe -> recipeMapper.recipeToRecipeDto(recipe));
     }
 
+    public Page<RecipeDto> findAllRecipesByCriteria(String search, Pageable pageable) {
+        return recipeRepository.findAll(recipe.nameRecipe.containsIgnoreCase(search)
+                .or(recipe.descriptionRecipe.containsIgnoreCase(search)), pageable)
+                .map(recipe -> recipeMapper.recipeToRecipeDto(recipe));
+    }
+
     @Override
     public RecipeDto save(RecipeDto recipeDto) {
         Optional<User> user = userRepository.findById(recipeDto.getUserId());
         if (!user.isPresent())
-            throw new EntityNotFoundException("User");
+            throw new ResourceNotFoundException("User");
         Recipe recipe = recipeMapper.recipeDtoToRecipe(recipeDto);
         recipe.setUser(user.get());
         recipe = recipeRepository.save(recipe);
@@ -47,7 +54,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public RecipeDto update(RecipeDto entity) {
         if (!recipeRepository.findById(entity.getId()).isPresent())
-            throw new EntityNotFoundException(ENTITY);
+            throw new ResourceNotFoundException(ENTITY);
         return save(entity);
     }
 
@@ -55,7 +62,7 @@ public class RecipeServiceImpl implements RecipeService {
     public RecipeDto findEntity(Long id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
         if (!recipe.isPresent())
-            throw new EntityNotFoundException(ENTITY);
+            throw new ResourceNotFoundException(ENTITY);
         return recipeMapper.recipeToRecipeDto(recipe.get());
     }
 
@@ -63,7 +70,7 @@ public class RecipeServiceImpl implements RecipeService {
     public void deleteEntity(Long id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
         if (!recipe.isPresent())
-            throw new EntityNotFoundException(ENTITY);
+            throw new ResourceNotFoundException(ENTITY);
         recipeRepository.delete(recipe.get());
     }
 

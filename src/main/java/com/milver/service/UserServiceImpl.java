@@ -4,7 +4,7 @@ import com.milver.domain.User;
 import com.milver.repository.UserRepository;
 import com.milver.service.dto.UserDto;
 import com.milver.service.mapper.UserMapper;
-import com.milver.web.error.EntityNotFoundException;
+import com.milver.web.error.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(UserDto entity) {
         if (!userRepository.findById(entity.getId()).isPresent())
-            throw new EntityNotFoundException(ENTITY);
+            throw new ResourceNotFoundException(ENTITY);
         return save(entity);
     }
 
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public UserDto findEntity(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (!user.isPresent())
-            throw new EntityNotFoundException(ENTITY);
+            throw new ResourceNotFoundException(ENTITY);
         return userMapper.userToUserDTO(user.get());
     }
 
