@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import static com.milver.domain.QRecipe.recipe;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -31,6 +32,12 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Page<RecipeDto> findAllEntities(Pageable pageable) {
         return recipeRepository.findAll(pageable).map(recipe -> recipeMapper.recipeToRecipeDto(recipe));
+    }
+
+    public Page<RecipeDto> findAllRecipesByCriteria(String search, Pageable pageable) {
+        return recipeRepository.findAll(recipe.nameRecipe.containsIgnoreCase(search)
+                .or(recipe.descriptionRecipe.containsIgnoreCase(search)), pageable)
+                .map(recipe -> recipeMapper.recipeToRecipeDto(recipe));
     }
 
     @Override

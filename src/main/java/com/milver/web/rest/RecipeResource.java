@@ -37,6 +37,12 @@ public class RecipeResource {
         return new ResponseEntity<Object>(page,null, HttpStatus.OK);
     }
 
+    @GetMapping("/search/{search}")
+    public ResponseEntity getRecipesBySearch(@PathVariable String search, Pageable pageable) {
+        Page<RecipeDto> page = recipeService.findAllRecipesByCriteria(search, pageable);
+        return new ResponseEntity<Object>(page,null, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity createRecipe(@Valid RecipeDto recipeDto) {
         RecipeDto result = recipeService.save(recipeDto);
