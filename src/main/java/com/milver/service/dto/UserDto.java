@@ -11,7 +11,7 @@ public class UserDto {
 
     private Long id;
 
-    @NotNull()
+    @NotNull
     @Email
     @NotBlank
     private String email;
