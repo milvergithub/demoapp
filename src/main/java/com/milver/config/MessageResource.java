@@ -21,7 +21,7 @@ public class MessageResource {
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-        source.setBasenames("i18n/messages");
+        source.setBasenames("i18n/message");
         source.setUseCodeAsDefaultMessage(true);
         return source;
     }
