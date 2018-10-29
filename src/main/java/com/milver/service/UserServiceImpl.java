@@ -26,13 +26,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<UserDto> findAllEntities(Pageable pageable) {
-        return userRepository.findAll(pageable).map(user -> userMapper.userToUserDTO(user));
+        return userRepository.findAll(pageable).map(user -> userMapper.userToUserDto(user));
     }
 
     @Override
     public UserDto save(UserDto userDto) {
-        User user = userRepository.save(userMapper.userDTOToUser(userDto));
-        return userMapper.userToUserDTO(user);
+        User user = userRepository.save(userMapper.userDtoToUser(userDto));
+        return userMapper.userToUserDto(user);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if (!user.isPresent())
             throw new ResourceNotFoundException(ENTITY);
-        return userMapper.userToUserDTO(user.get());
+        return userMapper.userToUserDto(user.get());
     }
 
     @Override
